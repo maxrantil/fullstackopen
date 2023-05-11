@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note over browser: User enters a note and clicks submit
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa with the new note as payload
+    activate server
+    server-->>browser: Status 201 Created
+    deactivate server
+
+    Note right of browser: The browser executes JavaScript code to add the new note to the list of notes without refreshing the page.
