@@ -1,42 +1,9 @@
-import { useState } from 'react'
-
-const Person = ({ person }) => {
-  return (
-    <div>{person.name} {person.number}</div>
-  )
-}
-
-const Filter = ({ filter, handleFilterChange }) => {
-  return (
-    <div>
-      filter shown with: <input value={filter} onChange={handleFilterChange} />
-    </div>
-  )
-}
-
-const PersonForm = ({ addPerson, newPerson, handlePersonChange, newNumber, handleNumberChange }) => {
-  return (
-    <form onSubmit={addPerson}>
-      <div>
-        name: <input value={newPerson} onChange={handlePersonChange} />
-      </div>
-      <div>
-        number: <input value={newNumber} onChange={handleNumberChange} />
-      </div>
-      <div>
-        <button type="submit">add</button>
-      </div>
-    </form>
-  )
-}
-
-const Persons = ({ personsToShow }) => {
-  return (
-    <div>
-      {personsToShow.map(person => <Person key={person.id} person={person} />)}
-    </div>
-  )
-}
+import { useState, useEffect } from 'react'
+import personService from './services/persons'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -48,6 +15,20 @@ const App = () => {
   const [newPerson, setNewPerson] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [successMessage, setSuccessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
+
+  const hook = () => {
+    console.log('effect')
+    personService
+      .getAll()
+      .then(initialPerson => {
+        console.log('promise fulfilled')
+        setPersons(initialPerson)
+      })
+  }
+
+  useEffect(hook, [])
 
   const handlePersonChange = (event) => {
     setNewPerson(event.target.value)
@@ -70,13 +51,45 @@ const App = () => {
     }
 
     if (persons.some(person => person.name === newPerson)) {
-      alert(`${newPerson} is already added to phonebook`)
+      if (window.confirm(`${newPerson} is already added to phonebook, replace the old number with a new one?`)) {
+        const person = persons.find(person => person.name === newPerson)
+        const changedPerson = { ...person, number: newNumber }
+
+        personService
+          .update(person.id, changedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => person.id !== returnedPerson.id ? person : returnedPerson))
+            setNewPerson('')
+            setNewNumber('')
+          })
+          .catch(error => {
+            setErrorMessage(
+              `Information of ${person.name} has already been removed from server`
+            )
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
+            setPersons(persons.filter(p => p.id !== person.id))
+          })
+      }
       return
     }
 
-    setPersons(persons.concat(personObject))
-    setNewPerson('')
-    setNewNumber('')
+    personService
+      .create(personObject)
+      .then(returnedPerson => {
+        console.log(returnedPerson)
+        setPersons(persons.concat(returnedPerson))
+        setSuccessMessage(
+          `Added ${personObject.name}`
+        )
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 5000)
+        setNewPerson('')
+        setNewNumber('')
+      }
+      )
   }
 
   const personsToShow = filter
@@ -86,6 +99,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} type='error' />
+      <Notification message={successMessage} type='success' />
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
       <h3>Add a new</h3>
       <PersonForm addPerson={addPerson} newPerson={newPerson} handlePersonChange={handlePersonChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
