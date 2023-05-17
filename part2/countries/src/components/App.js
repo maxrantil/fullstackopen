@@ -1,89 +1,87 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import CountryDetails from './CountryDetails';
 
 const Filter = ({ filter, handleFilterChange }) => {
-  return (
-    <div>
-      find countries <input value={filter} onChange={handleFilterChange} />
-    </div>
-  )
-}
+	return (
+		<div>
+			find countries <input value={filter} onChange={handleFilterChange} />
+		</div>
+	);
+};
 
-const ShowCountries = ({ countries, filter }) => {
+const ShowCountries = ({ countries, handleShowClick, filter }) => {
+	if (countries.length > 10) {
+		return <div>Too many matches, specify another filter</div>;
+	}
 
-  console.log('in ShowCountries:', countries);
+	if (countries.length === 1) {
+		return <CountryDetails country={countries[0]} />;
+	}
 
-  if (filter && countries.length > 10) {
-    return (
-      <div>Too many matches, specify another filter</div>
-    )
-  }
+	if (countries.length === 0 && filter) {
+		return <div>No matches found</div>;
+	}
 
-  if (countries.length === 1) {
-    const country = countries[0]
-    return (
-      <div>
-        <h1>{country.name.common}</h1>
-        <h3>{country.name.official}</h3>
-        <div>capital: <b>{country.capital}</b></div>
-        <div>population: {country.population.toLocaleString()}</div>
-        {country.currencies && typeof country.currencies === 'object' ?
-          Object.entries(country.currencies).map(([code, currency], i) => (
-            <div key={i}>currency: {currency.name} ({code}) - {currency.symbol}</div>
-          ))
-          :
-          <li>No currency available</li>
-        }
-        <div>region: {country.region}</div>
-        <h2>languages</h2>
-        <ul>
-          {Object.values(country.languages).map((language, i) => <li key={i}>{language}</li>)}
-        </ul>
-        <img src={country.flags.png} alt={country.name.common} width="100" />
-      </div>
-    )
-  }
+	return (
+		<div>
+			{countries.map((country) => (
+				<div key={country.name.common}>
+					{country.name.common} <button onClick={() => handleShowClick(country)}>Show</button>
+				</div>
+			))}
+		</div>
+	);
+};
 
-  console.log('inside countries:', countries);
-  return (
-    <div>
-      {countries.map(country => <div key={country.name.common}>{country.name.common}</div>)}
-    </div>
-  )
-}
+const fetchCountries = async () => {
+	const response = await axios.get('https://restcountries.com/v3.1/all');
+	return response.data;
+};
 
-function App() {
-  const [countries, setCountries] = useState([])
-  const [filter, setFilter] = useState('')
+const App = () => {
+	const [countries, setCountries] = useState([]);
+	const [filter, setFilter] = useState('');
+	const [selectedCountry, setSelectedCountry] = useState(null);
 
-  useEffect(() => {
-    axios
-      .get('https://restcountries.com/v3.1/all')
-      .then(response => {
-        console.log('countries loaded:', response);
-        const filteredCountries = response.data.filter(country => country.name.common.toLowerCase().startsWith(filter.toLowerCase()))
-        setCountries(filteredCountries)
-      })
-  }, [filter])
+	useEffect(() => {
+		const loadCountries = async () => {
+			const loadedCountries = await fetchCountries();
+			setCountries(loadedCountries);
+		};
+		loadCountries();
+	}, []);
 
-  const handleFilterChange = (event) => {
-    console.log('filter change event:', event.target.value);
-    setFilter(event.target.value)
-  }
+	const handleFilterChange = (event) => {
+		setFilter(event.target.value);
+		setSelectedCountry(null);
+	};
 
-  const countriesToShow = filter
-    ? countries.filter(country => country.name.common && typeof country.name.common === 'string' && country.name.common.toLowerCase().startsWith(filter.toLowerCase()))
-    : []
+	const handleShowClick = (country) => {
+		setSelectedCountry(country);
+	};
 
+	const countriesToShow = selectedCountry
+		? [selectedCountry]
+		: filter
+			? countries.filter((country) =>
+				country.name.common &&
+				typeof country.name.common === 'string' &&
+				country.name.common.toLowerCase().includes(filter.toLowerCase())
+			)
+			: [];
 
-  console.log('out countriesToShow:', countriesToShow);
+	console.log('countriesToShow:', countriesToShow);
+	console.log('selectedCountry:', selectedCountry);
 
-  return (
-    <div>
-      <Filter filter={filter} handleFilterChange={handleFilterChange} />
-      <ShowCountries countries={countriesToShow} filter={filter}/>
-    </div>
-  );
-}
+	console.log('countriesToShow:', countriesToShow);
+	console.log('selectedCountry:', selectedCountry);
+	return (
+		<div>
+			<Filter filter={filter} handleFilterChange={handleFilterChange} />
+			<ShowCountries countries={countriesToShow} handleShowClick={handleShowClick} filter={filter} />
+		</div>
+	);
+};
 
 export default App;
