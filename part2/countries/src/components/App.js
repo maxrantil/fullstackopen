@@ -1,38 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import CountryDetails from './CountryDetails';
-
-const Filter = ({ filter, handleFilterChange }) => {
-	return (
-		<div>
-			find countries <input value={filter} onChange={handleFilterChange} />
-		</div>
-	);
-};
-
-const ShowCountries = ({ countries, handleShowClick, filter }) => {
-	if (countries.length > 10) {
-		return <div>Too many matches, specify another filter</div>;
-	}
-
-	if (countries.length === 1) {
-		return <CountryDetails country={countries[0]} />;
-	}
-
-	if (countries.length === 0 && filter) {
-		return <div>No matches found</div>;
-	}
-
-	return (
-		<div>
-			{countries.map((country) => (
-				<div key={country.name.common}>
-					{country.name.common} <button onClick={() => handleShowClick(country)}>Show</button>
-				</div>
-			))}
-		</div>
-	);
-};
+import ShowCountries from './ShowCountries';
+import Filter from './Filter';
 
 const fetchCountries = async () => {
 	const response = await axios.get('https://restcountries.com/v3.1/all');
@@ -71,11 +40,6 @@ const App = () => {
 			)
 			: [];
 
-	console.log('countriesToShow:', countriesToShow);
-	console.log('selectedCountry:', selectedCountry);
-
-	console.log('countriesToShow:', countriesToShow);
-	console.log('selectedCountry:', selectedCountry);
 	return (
 		<div>
 			<Filter filter={filter} handleFilterChange={handleFilterChange} />

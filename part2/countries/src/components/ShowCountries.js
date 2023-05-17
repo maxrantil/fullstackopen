@@ -54,4 +54,28 @@ const CountryDetails = ({ country }) => {
 	);
 };
 
-export default CountryDetails;
+const ShowCountries = ({ countries, handleShowClick, filter }) => {
+	if (countries.length > 10) {
+		return <div>Too many matches, specify another filter</div>;
+	}
+
+	if (countries.length === 1) {
+		return <CountryDetails country={countries[0]} />;
+	}
+
+	if (countries.length === 0 && filter) {
+		return <div>No matches found</div>;
+	}
+
+	return (
+		<div>
+			{countries.map((country) => (
+				<div key={country.name.common}>
+					{country.name.common} <button onClick={() => handleShowClick(country)}>Show</button>
+				</div>
+			))}
+		</div>
+	);
+};
+
+export default ShowCountries;
