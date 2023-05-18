@@ -8,6 +8,8 @@ app.use(cors());
 
 app.use(express.json())
 
+app.use(express.static('build'))
+
 let notes = [
 	{
 		id: 1,
@@ -81,7 +83,7 @@ const generateId = () => {
 	response.json(note)
   })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`)
 })
