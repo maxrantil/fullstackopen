@@ -17,7 +17,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "json-server --watch db.json --port 3001"
+    "server": "json-server --watch db.json --port 3001",
+    "postbuild": "rm -rf ../../part3/coursedata/build && mv build ../../part3/coursedata/"
   },
   "proxy": "http://localhost:3001",
   "eslintConfig": {

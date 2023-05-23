@@ -6,7 +6,6 @@ const morgan = require('morgan');
 const cors = require('cors');
 const Person = require('./models/person')
 
-
 app.use(express.json())
 // Add Morgan middleware for logging
 // Define new token
@@ -23,7 +22,6 @@ const path = require('path');
 
 app.use(express.static(path.join(__dirname, 'build')));
 
-
 app.get('/api/people', (request, response) => {
 	Person.find({})
 		.then(people => {
@@ -35,16 +33,24 @@ app.get('/api/people', (request, response) => {
 		});
 });
 
-
 app.get('/info', (request, response) => {
 	const date = new Date()
 	response.send(`<p>Phonebook has info for ${people.length} people</p><p>${date}</p>`)
 })
 
 app.get('/api/people/:id', (request, response) => {
-	Note.findById(request.params.id).then(note => {
-		response.json(note)
-	})
+	Person.findById(request.params.id)
+		.then(person => {
+			if (person) {
+				response.json(person)
+			} else {
+				response.status(404).end()
+			}
+		})
+		.catch(error => {
+			console.log(error)
+			response.status(400).send({ error: 'malformatted id' })
+		})
 })
 
 // app.delete('/api/people/:id', (request, response) => {
@@ -54,12 +60,22 @@ app.get('/api/people/:id', (request, response) => {
 // 	response.status(204).end()
 // })
 
+app.use((error, request, response, next) => {
+	console.error(error.message)
+
+	if (error.name === 'CastError') {
+		return response.status(400).send({ error: 'malformatted id' })
+	}
+
+	next(error)
+})
+
 app.delete('/api/people/:id', (request, response, next) => {
-    Person.findByIdAndRemove(request.params.id)
-        .then(result => {
-            response.status(204).end()
-        })
-        .catch(error => next(error))
+	Person.findByIdAndRemove(request.params.id)
+		.then(result => {
+			response.status(204).end()
+		})
+		.catch(error => next(error))
 })
 
 

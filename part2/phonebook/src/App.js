@@ -17,6 +17,7 @@ const App = () => {
     peopleService
       .getAll()
       .then(initialPeople => {
+        console.log('InitialPeople:', initialPeople);
         setPeople(initialPeople);
       })
       .catch(error => {
