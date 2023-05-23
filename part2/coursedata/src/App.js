@@ -11,26 +11,22 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState('')
 
   const hook = () => {
-    console.log('effect')
     noteService
       .getAll()
       .then(initialNotes => {
-        console.log('promise fulfilled')
         setNotes(initialNotes)
       })
   }
 
   useEffect(hook, [])
 
-  useEffect(() => {
-    console.log('second effect')
-    noteService
-      .getAll()
-      .then(initialNotes => {
-        console.log('promise fulfilled')
-        setNotes(initialNotes)
-      })
-  }, [])
+  // useEffect(() => {
+  //   noteService
+  //     .getAll()
+  //     .then(initialNotes => {
+  //       setNotes(initialNotes)
+  //     })
+  // }, [])
 
   if (!notes) {
     return null

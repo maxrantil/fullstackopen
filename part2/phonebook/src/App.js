@@ -1,17 +1,12 @@
 import { useState, useEffect } from 'react'
-import personService from './services/persons'
+import peopleService from './services/people'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
-import Persons from './components/Persons'
+import People from './components/People'
 import Notification from './components/Notification'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ])
+  const [people, setPeople] = useState([])
   const [newPerson, setNewPerson] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
@@ -19,14 +14,15 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
 
   const hook = () => {
-    console.log('effect')
-    personService
+    peopleService
       .getAll()
-      .then(initialPerson => {
-        console.log('promise fulfilled')
-        setPersons(initialPerson)
+      .then(initialPeople => {
+        setPeople(initialPeople);
       })
-  }
+      .catch(error => {
+        console.log('Error fetching people:', error);
+      });
+  };
 
   useEffect(hook, [])
 
@@ -47,18 +43,17 @@ const App = () => {
     const personObject = {
       name: newPerson,
       number: newNumber,
-      id: persons.length + 1,
     }
 
-    if (persons.some(person => person.name === newPerson)) {
+    if (people.some(person => person.name === newPerson)) {
       if (window.confirm(`${newPerson} is already added to phonebook, replace the old number with a new one?`)) {
-        const person = persons.find(person => person.name === newPerson)
+        const person = people.find(person => person.name === newPerson)
         const changedPerson = { ...person, number: newNumber }
 
-        personService
+        peopleService
           .update(person.id, changedPerson)
           .then(returnedPerson => {
-            setPersons(persons.map(person => person.id !== returnedPerson.id ? person : returnedPerson))
+            setPeople(people.map(person => person.id !== returnedPerson.id ? person : returnedPerson))
             setNewPerson('')
             setNewNumber('')
           })
@@ -69,17 +64,16 @@ const App = () => {
             setTimeout(() => {
               setErrorMessage(null)
             }, 5000)
-            setPersons(persons.filter(p => p.id !== person.id))
+            setPeople(people.filter(p => p.id !== person.id))
           })
       }
       return
     }
 
-    personService
+    peopleService
       .create(personObject)
       .then(returnedPerson => {
-        console.log(returnedPerson)
-        setPersons(persons.concat(returnedPerson))
+        setPeople(people.concat(returnedPerson))
         setSuccessMessage(
           `Added ${personObject.name}`
         )
@@ -92,9 +86,33 @@ const App = () => {
       )
   }
 
-  const personsToShow = filter
-    ? persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
-    : persons
+  const handleDelete = (id) => {
+    peopleService
+      .deletePerson(id)
+      .then(() => {
+        peopleService.getAll().then(updatedPeople => {
+          setPeople(updatedPeople);
+          setSuccessMessage(
+            `Deleted person`
+          )
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
+        })
+      })
+      .catch(error => {
+        setErrorMessage(
+          `Information of the person has already been removed from server`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      });
+  }
+
+  const peopleToShow = filter
+    ? people.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
+    : people
 
   return (
     <div>
@@ -105,7 +123,7 @@ const App = () => {
       <h3>Add a new</h3>
       <PersonForm addPerson={addPerson} newPerson={newPerson} handlePersonChange={handlePersonChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
+      <People peopleToShow={peopleToShow} handleDelete={handleDelete} />
     </div>
   )
 }

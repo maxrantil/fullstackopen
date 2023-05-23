@@ -1,5 +1,6 @@
 import axios from 'axios'
-const baseUrl = 'api/persons'
+
+const baseUrl = 'api/people'
 
 const getAll = () => {
 	const request = axios.get(baseUrl)
@@ -29,9 +30,11 @@ const deletePerson = (id) => {
 	})
 }
 
-export default {
+const peopleService = {
 	getAll,
 	create,
 	update,
 	deletePerson
 }
+
+export default peopleService;
