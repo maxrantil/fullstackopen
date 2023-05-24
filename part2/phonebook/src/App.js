@@ -83,8 +83,22 @@ const App = () => {
         }, 5000)
         setNewPerson('')
         setNewNumber('')
-      }
-      )
+      })
+      .catch(error => {
+        console.log('Error adding person:', error)
+        if (error.response.data.error.name === 'ValidationError') {
+          setErrorMessage(
+            `${error.response.data.error.message}`
+          )
+        } else {
+          setErrorMessage(
+            `${error.response.data.error}`
+          )
+        }
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      })
   }
 
   const handleDelete = (id) => {
