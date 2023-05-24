@@ -1,15 +1,3 @@
-// import Person from "./Person";
-
-// const People = ({ peopleToShow }) => {
-// 	return (
-// 		<div>
-// 			{peopleToShow.map(person => <Person key={person.id} person={person} />)}
-// 		</div>
-// 	)
-// }
-
-// export default People;
-
 import DeleteButton from './DeleteButton';
 
 const People = ({ peopleToShow, handleDelete }) => {
@@ -17,9 +5,9 @@ const People = ({ peopleToShow, handleDelete }) => {
         <div>
             {peopleToShow.map((person, index) =>
                 <div key={index}>
-                    <span>{person.name}</span>
-                    <span>{person.number}</span>
-                    <DeleteButton person={person} handleDelete={handleDelete} />
+                    <span className="space">{person.name}</span>
+                    <span className="space">{person.number}</span>
+                    <DeleteButton className="space" person={person} handleDelete={handleDelete} />
                 </div>
             )}
         </div>
