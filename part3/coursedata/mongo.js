@@ -12,12 +12,12 @@ const url =
 
 mongoose.set('strictQuery',false)
 
-console.log('url', url);
-console.log('password', password);
+console.log('url', url)
+console.log('password', password)
 
 mongoose.connect(url)
   .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('Failed to connect to MongoDB', err));
+  .catch((err) => console.error('Failed to connect to MongoDB', err))
 
 
 const noteSchema = new mongoose.Schema({
@@ -26,11 +26,6 @@ const noteSchema = new mongoose.Schema({
 })
 
 const Note = mongoose.model('Note', noteSchema)
-
-const note = new Note({
-  content: 'HTML is Easy',
-  important: true,
-})
 
 Note.find({}).then(result => {
   result.forEach(note => {
