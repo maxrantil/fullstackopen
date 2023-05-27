@@ -97,13 +97,77 @@ describe('favorite blog', () => {
 
   test('when list has only one blog, equals that blog', () => {
     const result = listHelper.favoriteBlog(listWithOneBlog)
-    // expect(result).toEqual(listWithOneBlog[0])
-    expect(result).toEqual(5)
+    const expected = {
+      title: listWithOneBlog[0].title,
+      author: listWithOneBlog[0].author,
+      likes: listWithOneBlog[0].likes,
+    }
+    expect(result).toEqual(expected)
   })
+
 
   test('when list has multiple blogs, equals the blog with most likes', () => {
     const result = listHelper.favoriteBlog(listWithMultipleBlogs)
-    expect(result).toEqual(listWithMultipleBlogs[2])
+    const expected = {
+      title: listWithMultipleBlogs[2].title,
+      author: listWithMultipleBlogs[2].author,
+      likes: listWithMultipleBlogs[2].likes,
+    }
+    expect(result).toEqual(expected)
+  })
+
+})
+
+describe('most blogs', () => {
+
+  test('when list has no blogs, equals null', () => {
+    const result = listHelper.mostBlogs(listWithNoBlogs)
+    expect(result).toBe(null)
+  })
+
+  test('when list has only one blog, equals that author', () => {
+    const result = listHelper.mostBlogs(listWithOneBlog)
+    const expected = {
+      author: listWithOneBlog[0].author,
+      blogs: 1,
+    }
+    expect(result).toEqual(expected)
+  })
+
+  test('when list has multiple blogs with different authors, equals the author with most blogs', () => {
+    const result = listHelper.mostBlogs(listWithMultipleBlogs)
+    const expected = {
+      author: listWithMultipleBlogs[3].author,
+      blogs: 3,
+    }
+    expect(result).toEqual(expected)
+  })
+
+})
+
+describe('most likes', () => {
+
+  test('when list has no blogs, equals null', () => {
+    const result = listHelper.mostLikes(listWithNoBlogs)
+    expect(result).toBe(null)
+  })
+
+  test('when list has only one blog, equals that author', () => {
+    const result = listHelper.mostLikes(listWithOneBlog)
+    const expected = {
+      author: listWithOneBlog[0].author,
+      likes: listWithOneBlog[0].likes,
+    }
+    expect(result).toEqual(expected)
+  })
+
+  test('when list has multiple blogs with different authors, equals the author with most likes', () => {
+    const result = listHelper.mostLikes(listWithMultipleBlogs)
+    const expected = {
+      author: listWithMultipleBlogs[1].author,
+      likes: 17,
+    }
+    expect(result).toEqual(expected)
   })
 
 })
