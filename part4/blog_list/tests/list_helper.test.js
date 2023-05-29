@@ -246,6 +246,30 @@ describe('Blog list expansions, step1', () => {
   })
 })
 
+describe('Blog list expansions, step2', () => {
+  test('updating a blog post', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+
+    const newLikes = {
+      likes: blogToUpdate.likes + 1,
+    }
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(newLikes)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtEnd).toHaveLength(helper.listWithMultipleBlogs.length)
+
+    const updatedBlog = blogsAtEnd.find(blog => blog.id === blogToUpdate.id)
+    expect(updatedBlog.likes).toBe(blogToUpdate.likes + 1)
+  })
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
