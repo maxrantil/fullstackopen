@@ -196,7 +196,55 @@ describe('Blog list tests, step4', () => {
   })
 })
 
+describe('Blog list tests, step5', () => {
+  test('if title is missing, responds with status code 400', async () => {
+    const newBlog = {
+      author: 'Jest Author',
+      url: 'https://jest.com/async-await',
+      likes: 5
+    }
 
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
+
+  test('if url is missing, responds with status code 400', async () => {
+    const newBlog = {
+      title: 'Async/Await simplifies making async JS code',
+      author: 'Jest Author',
+      likes: 5
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
+})
+
+describe('Blog list expansions, step1', () => {
+  test('deletion of a note', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtEnd).toHaveLength(
+      helper.listWithMultipleBlogs.length - 1
+    )
+
+    const id = blogsAtEnd.map(r => r.id)
+
+    expect(id).not.toContain(blogToDelete.id)
+
+  })
+})
 
 afterAll(async () => {
   await mongoose.connection.close()
