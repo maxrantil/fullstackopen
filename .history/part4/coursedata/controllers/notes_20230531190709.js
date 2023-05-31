@@ -5,8 +5,8 @@ const jwt = require('jsonwebtoken')
 
 const getTokenFrom = request => {
   const authorization = request.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer')) {
-    return authorization.replace('bearer', '').trim()
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return authorization.replace('Bearer ', '')
   }
   return null
 }
@@ -19,14 +19,13 @@ notesRouter.get('/', async (request, response) => {
 })
 
 notesRouter.post('/', async (request, response) => {
-  console.log(request.headers) // add this line
   const body = request.body
 
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-
   if (!decodedToken.id) {
-    return response.status(401).json({ error: 'aa token invalid' })
+    return response.status(401).json({ error: 'token invalid' })
   }
+  console.log('decodedToken: ', decodedToken)
 
   const user = await User.findById(decodedToken.id)
 
@@ -35,6 +34,9 @@ notesRouter.post('/', async (request, response) => {
     important: body.important === undefined ? false : body.important,
     user: user.id
   })
+
+  
+
 
   const savedNote = await note.save()
   user.notes = user.notes.concat(savedNote._id)

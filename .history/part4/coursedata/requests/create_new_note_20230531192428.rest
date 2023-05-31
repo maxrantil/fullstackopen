@@ -3,6 +3,6 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY0NzVkNDNjYjgzYWViYjFkOGM4MTUxNSIsImlhdCI6MTY4NTU1MDI0MiwiZXhwIjoxNjg1NTUzODQyfQ.2cIOSHrd6gGQowxWIWivOHJ8CFie72mrlckf-5lJbKE
 
 {
-  "content": "mongolian bbq is a beast",
+  "content": "mongolian bbq is the best",
   "important": true
 }

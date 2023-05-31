@@ -5,11 +5,20 @@ const jwt = require('jsonwebtoken')
 
 const getTokenFrom = request => {
   const authorization = request.get('authorization')
+  if (authorization && authorization.startsWith('bearer')) {
+    return authorization.replace('bearer ', '')
+  }
+  return null
+}
+
+const getTokenFrom = request => {
+  const authorization = request.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer')) {
     return authorization.replace('bearer', '').trim()
   }
   return null
 }
+
 
 notesRouter.get('/', async (request, response) => {
   const notes = await Note

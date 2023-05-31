@@ -1,10 +1,10 @@
 const config = require('./utils/config')
+const logger = require('./utils/logger')
 const express = require('express')
+require('express-async-errors')
 const app = express()
 const cors = require('cors')
-const logger = require('./utils/logger')
 const mongoose = require('mongoose')
-require('express-async-errors')
 
 const notesRouter = require('./controllers/notes')
 const usersRouter = require('./controllers/users')
