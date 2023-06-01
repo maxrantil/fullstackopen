@@ -1,70 +1,20 @@
-const bcrypt = require('bcrypt')
-const mongoose = require('mongoose')
-const supertest = require('supertest')
-const app = require('../app')
-const User = require('../models/user')
-const Blog = require('../models/blog')
+// const helper = require('./test_helper')
+// const supertest = require('supertest')
+// const mongoose = require('mongoose')
+// const jwt = require('jsonwebtoken')
+// const app = require('../app')
+// const api = supertest(app)
 
-const api = supertest(app)
+// const Blog = require('../models/blog')
 
-let token
+// beforeEach(async () => {
+//   await Blog.deleteMany({})
 
-beforeEach(async () => {
-  // Clear the database
-  await User.deleteMany({})
-  await Blog.deleteMany({})
-
-  // Create a test user
-  const passwordHash = await bcrypt.hash('test', 10)
-  const testUser = new User({ username: 'test', passwordHash })
-  await testUser.save()
-
-  // Log in the test user to get a token
-  const response = await api
-    .post('/api/login')
-    .send({ username: 'test', password: 'test' })
-
-  token = response.body.token // save the token for later use
-})
-
-test('a new blog can be added', async () => {
-  const newBlog = {
-    title: 'Test Blog',
-    author: 'Test Author',
-    url: 'http://test.com',
-    likes: 5,
-  }
-
-  await api
-    .post('/api/blogs')
-    .set('Authorization', `Bearer ${token}`)
-    .send(newBlog)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
-
-  const blogs = await api.get('/api/blogs')
-
-  expect(blogs.body).toHaveLength(1)
-  expect(blogs.body[0].title).toBe(newBlog.title)
-})
-
-test('adding a blog fails with status code 401 if token not provided', async () => {
-  const newBlog = {
-    title: 'Test Blog',
-    author: 'Test Author',
-    url: 'http://test.com',
-    likes: 5,
-  }
-
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(401)
-
-  const blogs = await api.get('/api/blogs')
-
-  expect(blogs.body).toHaveLength(0) // No blog should have been added
-})
+//   const blogObjects = helper.listWithMultipleBlogs
+//     .map(blog => new Blog(blog))
+//   const promiseArray = blogObjects.map(blog => blog.save())
+//   await Promise.all(promiseArray)
+// })
 
 // describe('Retrieving Blogs', () => {
 //   test('Returns blogs as JSON', async () => {
@@ -296,10 +246,12 @@ test('adding a blog fails with status code 401 if token not provided', async () 
 //   })
 // })
 
-afterAll(async () => {
-  try {
-    await mongoose.connection.close()
-  } catch (error) {
-    console.error('Failed to close connection', error)
-  }
-})
+// afterAll(async () => {
+//   try {
+//     await mongoose.connection.close()
+//   } catch (error) {
+//     console.error('Failed to close connection', error)
+//   }
+// })
+
+

@@ -1,7 +1,7 @@
 require('dotenv').config()
 const blogsRouter = require('express').Router()
 
-// const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 
 const Blog = require('../models/blog')
 // const User = require('../models/user')
@@ -19,7 +19,7 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
   const user = request.user  // User is already extracted and verified in the middleware
 
   if (!user) {
-    return response.status(401).json({ error: 'token missing or invalid' })
+    return response.status(401).json({ error: 'token missing or invalid' });
   }
 
   if (!body.title || !body.url) {
