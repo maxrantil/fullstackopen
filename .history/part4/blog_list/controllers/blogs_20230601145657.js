@@ -33,6 +33,8 @@ blogsRouter.post('/', async (request, response) => {
     return response.status(400).end()
   }
 
+  const user = await User.findOne({})  // Find first user in the database
+
   const blog = new Blog({
     title: body.title,
     author: body.author,
