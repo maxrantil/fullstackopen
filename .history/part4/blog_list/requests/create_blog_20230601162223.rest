@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer .eyJ1c2VybmFtZSI6Im1yYW50aWwiLCJpZCI6IjY0Nzg4MDBiOTgxYmUzMjI4ZDE5OGE3MCIsImlhdCI6MTY4NTYyMDI3M30.C4IBfM83mQ2JeMPrwHdalPZSLNuo-XAkA4bBB6CXHpo
+
+{
+  "title": "My second blog post",
+  "author": "Matti Rantila",
+  "url": "https://rantila.fi/",
+  "likes": 0
+}
