@@ -45,11 +45,11 @@ const tokenExtractor = (request, response, next) => {
 const userExtractor = async (request, response, next) => {
   const authorization = request.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    // const token = authorization.substring(7) // This will extract the token from the header
+    const token = authorization.substring(7) // This will extract the token from the header
 
     const token = authorization && authorization.toLowerCase().startsWith('bearer ')
-      ? authorization.split(' ')[1]
-      : null
+    ? authorization.split(' ')[1]
+    : null
 
     const decodedToken = jwt.verify(token, process.env.SECRET)
     if (!token || !decodedToken.id) {

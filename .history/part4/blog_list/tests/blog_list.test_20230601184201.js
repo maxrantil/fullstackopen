@@ -124,6 +124,34 @@ describe('Default Blog Properties', () => {
 })
 
 describe('Blog Creation Validation', () => {
+  test('Responds with 400 status code if "title" property is missing', async () => {
+    const newBlog = {
+      author: 'Jest Author',
+      url: 'https://jest.com/async-await',
+      likes: 5
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
+
+  test('Responds with 400 status code if "url" property is missing', async () => {
+    const newBlog = {
+      title: 'Async/Await simplifies making async JS code',
+      author: 'Jest Author',
+      likes: 5
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
+})
+
+describe('Blog Creation Validation', () => {
   let token = null
 
   beforeAll(async () => {

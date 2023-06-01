@@ -124,26 +124,6 @@ describe('Default Blog Properties', () => {
 })
 
 describe('Blog Creation Validation', () => {
-  let token = null
-
-  beforeAll(async () => {
-    const userResult = await api
-      .post('/api/users')
-      .send({
-        username: 'testuser',
-        name: 'Test User',
-        password: 'password',
-      })
-
-    const user = userResult.body
-
-    const userForToken = {
-      username: user.username,
-      id: user._id,
-    }
-    token = jwt.sign(userForToken, process.env.SECRET)
-  })
-
   test('Responds with 400 status code if "title" property is missing', async () => {
     const newBlog = {
       author: 'Jest Author',
@@ -153,7 +133,6 @@ describe('Blog Creation Validation', () => {
 
     await api
       .post('/api/blogs')
-      .set('Authorization', `bearer ${token}`)
       .send(newBlog)
       .expect(400)
   })
@@ -167,12 +146,10 @@ describe('Blog Creation Validation', () => {
 
     await api
       .post('/api/blogs')
-      .set('Authorization', `bearer ${token}`)
       .send(newBlog)
       .expect(400)
   })
 })
-
 
 describe('Deleting Blogs', () => {
   test('Deletes a blog and decreases blog count', async () => {
