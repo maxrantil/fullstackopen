@@ -1,8 +1,0 @@
-POST http://localhost:3001/api/notes
-Content-Type: application/json
-Authorization: bearer .eyJ1c2VybmFtZSI6Im11dWthbGFpbmVuIiwiaWQiOiI2NDc3MjgwYjVlYWRjMWRmNDQwNmNhOTIiLCJpYXQiOjE2ODU1MzQwNzgsImV4cCI6MTY4NTUzNzY3OH0.rZilhNnnDRCbSDfHjAgq6pLr29PaqOun29wjD5ZUPGw
-
-{
-  "content": "mongolian bbq is the best",
-  "important": true
-}
