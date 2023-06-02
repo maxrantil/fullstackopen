@@ -1,15 +1,12 @@
-// require('dotenv').config()
 const config = require('./utils/config')
 const logger = require('./utils/logger')
 
 const express = require('express')
-// const expressJwt = require('express-jwt')
 
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
 require('express-async-errors')
-
 
 const blogsRouter = require('./controllers/blogs.js')
 const usersRouter = require('./controllers/users')
@@ -34,8 +31,6 @@ app.use(cors())
 
 app.use(express.static('build'))
 app.use(express.json())
-
-// app.use('/api/blogs', expressJwt({ secret: process.env.SECRET }))
 
 app.use(middleware.requestLogger)
 app.use(middleware.tokenExtractor)

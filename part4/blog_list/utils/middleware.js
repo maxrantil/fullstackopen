@@ -1,3 +1,4 @@
+require('dotenv').config()
 const jwt = require('jsonwebtoken')
 const logger = require('./logger')
 const User = require('../models/user')
@@ -28,7 +29,6 @@ const errorHandler = (error, request, response, next) => {
       error: 'token expired'
     })
   }
-
   next(error)
 }
 
@@ -45,8 +45,6 @@ const tokenExtractor = (request, response, next) => {
 const userExtractor = async (request, response, next) => {
   const authorization = request.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    // const token = authorization.substring(7) // This will extract the token from the header
-
     const token = authorization && authorization.toLowerCase().startsWith('bearer ')
       ? authorization.split(' ')[1]
       : null
@@ -55,7 +53,6 @@ const userExtractor = async (request, response, next) => {
     if (!token || !decodedToken.id) {
       return response.status(401).json({ error: 'token missing or invalid' })
     } else {
-      // request.user = decodedToken
       request.user = await User.findById(decodedToken.id)
     }
   } else {

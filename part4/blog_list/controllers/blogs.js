@@ -1,10 +1,6 @@
-require('dotenv').config()
 const blogsRouter = require('express').Router()
 
-// const jwt = require('jsonwebtoken')
-
 const Blog = require('../models/blog')
-// const User = require('../models/user')
 const userExtractor = require('../utils/middleware').userExtractor
 
 blogsRouter.get('/', async (request, response) => {
