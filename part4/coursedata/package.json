@@ -9,7 +9,6 @@
     "lint": "eslint --fix .",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
   },
-  "proxy": "http://localhost:3001",
   "repository": {
     "type": "git",
     "url": "github.com/maxrantil/fullstackopen"
