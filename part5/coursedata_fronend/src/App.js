@@ -14,16 +14,21 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
-  const hook = () => {
+  useEffect(() => {
     noteService
-      .getAll()
-      .then(initialNotes => {
-        console.log('InitialNotes:', initialNotes);
+      .getAll().then(initialNotes => {
         setNotes(initialNotes)
       })
-  }
+  }, [])
 
-  useEffect(hook, [])
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      noteService.setToken(user.token)
+    }
+  }, [])
 
   if (!notes) {
     return null
