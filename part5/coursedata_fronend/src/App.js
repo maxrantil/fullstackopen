@@ -79,8 +79,6 @@ const App = () => {
     ? notes
     : notes.filter(note => note.important)
 
-
-
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -153,7 +151,8 @@ const App = () => {
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? 'important' : 'all'}
-        </button>      </div>
+        </button>
+      </div>
       <ul>
         {notesToShow.map(note =>
           <Note
