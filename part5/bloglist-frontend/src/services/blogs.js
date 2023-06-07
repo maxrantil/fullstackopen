@@ -1,8 +1,16 @@
 import axios from 'axios'
 const baseUrl = '/api/blogs'
 
+let token = null;
+
 const setToken = newToken => {
-  return `bearer ${newToken}`
+  token = `bearer ${newToken}`;
+}
+
+const config = () => {
+  return {
+    headers: { Authorization: token },
+  }
 }
 
 const getAll = () => {
@@ -10,5 +18,10 @@ const getAll = () => {
   return request.then(response => response.data)
 }
 
+const create = async newObject => {
+  const response = await axios.post(baseUrl, newObject, config())
+  return response.data
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, setToken }
+export default { getAll, create, setToken }
