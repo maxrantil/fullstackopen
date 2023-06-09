@@ -16,7 +16,6 @@ const Blog = ({ blog }) => {
   }
 
   return (
-
     <div style={blogStyle}>
       {blog.title} {blog.author}
       <button onClick={toggleDetails}>
