@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, likeBlog }) => {
   const [detailsVisible, setDetailsVisible] = useState(false)
 
   const toggleDetails = () => {
@@ -24,7 +24,9 @@ const Blog = ({ blog }) => {
       {detailsVisible && (
         <div>
           <p>{blog.url}</p>
-          <p>likes {blog.likes} <button>like</button></p>
+          <p>likes {blog.likes}
+            <button onClick={() => likeBlog(blog.id)}>like</button>
+          </p>
           <p>{blog.user.name}</p>
           <p><button>remove</button></p>
         </div>
