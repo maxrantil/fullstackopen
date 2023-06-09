@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Logout from './components/Logout'
 import CreateForm from './components/CreateForm'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -16,13 +17,13 @@ const App = () => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
+  const blogFormRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
     )
   }, [])
-
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
@@ -107,22 +108,23 @@ const App = () => {
 
   return (
     <div>
-      <h1>Bloglist</h1>
+      <h1>blogs</h1>
       <Notification message={errorMessage} messageType={'error'} />
       <Notification message={successMessage} messageType={'success'} />
       {!user && loginForm()}
       {user && <div>
         <p>{user.name} logged in <Logout /></p>
-        <CreateForm
-          createBlog={createBlog}
-          title={title}
-          author={author}
-          url={url}
-          setTitle={setTitle}
-          setAuthor={setAuthor}
-          setUrl={setUrl}
-        />
-        <h2>blogs</h2>
+        <Togglable buttonLabel='new note' ref={blogFormRef}>
+          <CreateForm
+            createBlog={createBlog}
+            title={title}
+            author={author}
+            url={url}
+            setTitle={setTitle}
+            setAuthor={setAuthor}
+            setUrl={setUrl}
+          />
+        </Togglable>
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
         )}
