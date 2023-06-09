@@ -5,12 +5,13 @@ const BlogForm = ({ createBlog }) => {
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
 
+
   const addBlog = (event) => {
     event.preventDefault();
     const blogObject = {
       title: title,
       author: author,
-      url: url,
+      url: url
     }
 
     createBlog(blogObject);

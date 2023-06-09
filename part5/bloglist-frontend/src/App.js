@@ -57,6 +57,7 @@ const App = () => {
   const createBlog = async (blogObject) => {
     try {
       const returnedBlog = await blogService.create(blogObject);
+      returnedBlog.user = user;  // Manually add the user object to the blog post
       setBlogs(blogs.concat(returnedBlog));
       setSuccessMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`);
       setTimeout(() => {
@@ -103,7 +104,7 @@ const App = () => {
       {user && <div>
         <p>{user.name} logged in <Logout /></p>
         <Togglable buttonLabel='new note' ref={blogFormRef}>
-          <BlogForm createBlog={createBlog}/>
+          <BlogForm createBlog={createBlog} />
         </Togglable>
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
