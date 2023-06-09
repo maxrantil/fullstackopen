@@ -14,7 +14,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const blogFormRef = useRef();
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService
@@ -56,18 +56,18 @@ const App = () => {
 
   const createBlog = async (blogObject) => {
     try {
-      const returnedBlog = await blogService.create(blogObject);
-      returnedBlog.user = user;  // Manually add the user object to the blog post
-      setBlogs(blogs.concat(returnedBlog));
-      setSuccessMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`);
+      const returnedBlog = await blogService.create(blogObject)
+      returnedBlog.user = user  // Manually add the user object to the blog post
+      setBlogs(blogs.concat(returnedBlog))
+      setSuccessMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
       setTimeout(() => {
-        setSuccessMessage(null);
-      }, 5000);
+        setSuccessMessage(null)
+      }, 5000)
     } catch (exception) {
-      setErrorMessage('blog could not be created');
+      setErrorMessage('blog could not be created')
       setTimeout(() => {
-        setErrorMessage(null);
-      }, 5000);
+        setErrorMessage(null)
+      }, 5000)
     }
   }
 
@@ -96,7 +96,7 @@ const App = () => {
   )
 
   const likeBlog = async (id) => {
-    const blog = blogs.find(b => b.id === id);
+    const blog = blogs.find(b => b.id === id)
     const updatedBlog = {
       ...blog,
       likes: blog.likes + 1,
@@ -104,16 +104,16 @@ const App = () => {
       author: blog.author,
       title: blog.title,
       url: blog.url
-    };
-    const returnedBlog = await blogService.update(id, updatedBlog);
-    setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog));
+    }
+    const returnedBlog = await blogService.update(id, updatedBlog)
+    setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
   }
 
   const deleteBlog = async (id) => {
-    const blog = blogs.find(b => b.id === id);
+    const blog = blogs.find(b => b.id === id)
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      await blogService.remove(id);
-      setBlogs(blogs.filter(blog => blog.id !== id));
+      await blogService.remove(id)
+      setBlogs(blogs.filter(blog => blog.id !== id))
     }
   }
 

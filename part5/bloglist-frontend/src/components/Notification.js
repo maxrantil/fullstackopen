@@ -3,7 +3,7 @@ const Notification = ({ message, messageType }) => {
     return null
   }
 
-  const messageClass = messageType === 'error' ? 'error' : 'success';
+  const messageClass = messageType === 'error' ? 'error' : 'success'
 
   return (
     <div className={messageClass}>
@@ -12,4 +12,4 @@ const Notification = ({ message, messageType }) => {
   )
 }
 
-export default Notification;
+export default Notification

@@ -2,11 +2,11 @@ import { useState, useEffect, useRef } from 'react'
 import loginService from './services/login'
 import Note from './components/Note'
 import noteService from './services/notes'
-import Notification from "./components/Notification"
-import LoginForm from "./components/LoginForm"
-import NoteForm from "./components/NoteForm"
-import Togglable from "./components/Togglable"
-import Footer from "./components/Footer"
+import Notification from './components/Notification'
+import LoginForm from './components/LoginForm'
+import NoteForm from './components/NoteForm'
+import Togglable from './components/Togglable'
+import Footer from './components/Footer'
 
 const App = () => {
   const [notes, setNotes] = useState(null)
@@ -47,7 +47,7 @@ const App = () => {
       .update(id, changedNote).then(returnedNote => {
         setNotes(notes.map(note => note.id !== id ? note : returnedNote))
       })
-      .catch(error => {
+      .catch(() => {
         setErrorMessage(
           `Note '${note.content}' was already removed from server`
         )
@@ -144,13 +144,13 @@ const App = () => {
           show {showAll ? 'important' : 'all'}
         </button>
       </div>
-      {/* <Togglable buttonLabel="new note">
+      <Togglable buttonLabel="new note">
         <NoteForm
           onSubmit={addNote}
           value={newNote}
           handleChange={handleNoteChange}
         />
-      </Togglable> */}
+      </Togglable>
       <ul>
         {notesToShow.map(note =>
           <Note

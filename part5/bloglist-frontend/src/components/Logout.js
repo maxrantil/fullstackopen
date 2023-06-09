@@ -1,8 +1,8 @@
 const Logout = () => {
 
   const handleLogout = () => {
-    localStorage.clear();
-    window.location.reload();
+    localStorage.clear()
+    window.location.reload()
   }
 
   return (
@@ -10,4 +10,4 @@ const Logout = () => {
   )
 }
 
-export default Logout;
+export default Logout
