@@ -109,6 +109,14 @@ const App = () => {
     setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog));
   }
 
+  const deleteBlog = async (id) => {
+    const blog = blogs.find(b => b.id === id);
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      await blogService.remove(id);
+      setBlogs(blogs.filter(blog => blog.id !== id));
+    }
+  }
+
 
   return (
     <div>
@@ -122,7 +130,7 @@ const App = () => {
           <BlogForm createBlog={createBlog} />
         </Togglable>
         {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-          <Blog key={blog.id} blog={blog} likeBlog={likeBlog} />
+          <Blog key={blog.id} blog={blog} likeBlog={likeBlog} deleteBlog={deleteBlog} user={user} />
         )}
       </div>
       }
