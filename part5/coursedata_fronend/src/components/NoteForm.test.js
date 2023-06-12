@@ -11,7 +11,6 @@ test('<NoteForm /> updates parent state and calls onSubmit', async () => {
   render(<NoteForm createNote={createNote} />)
 
   const input = screen.getByPlaceholderText('write note content here')
-  // const input = screen.getByRole('textbox')
   const sendButton = screen.getByText('save')
 
   await user.type(input, 'testing a form...')
