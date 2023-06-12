@@ -1,56 +1,65 @@
 /* eslint-env node */
 module.exports = {
-  'env': {
-    'browser': true,
-    'es6': true,
-    'jest/globals': true
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest/globals": true,
+    "cypress/globals": true
   },
-  'extends': [
-    'eslint:recommended',
-    'plugin:react/recommended'
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
   ],
-  'parserOptions': {
-    'ecmaFeatures': {
-      'jsx': true
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
-    'ecmaVersion': 2018,
-    'sourceType': 'module'
+    "ecmaVersion": 2018,
+    "sourceType": "module"
   },
-  'plugins': [
-    'react', 'jest'
+  "plugins": [
+    "react",
+    "jest",
+    "cypress"
   ],
-  'rules': {
-    'indent': [
-      'error',
+  "rules": {
+    "indent": [
+      "error",
       2
     ],
-    'linebreak-style': [
-      'error',
-      'unix'
+    "linebreak-style": [
+      "error",
+      "unix"
     ],
-    'quotes': [
-      'error',
-      'single'
+    "quotes": [
+      "error",
+      "single"
     ],
-    'semi': [
-      'error',
-      'never'
+    "semi": [
+      "error",
+      "never"
     ],
-    'eqeqeq': 'error',
-    'no-trailing-spaces': 'error',
-    'object-curly-spacing': [
-      'error', 'always'
+    "ignorePatterns": [
+      0, // Set severity to 0 (off) for the ignorePatterns rule
+      '**/.eslintrc' // Specify the pattern to ignore
     ],
-    'arrow-spacing': [
-      'error', { 'before': true, 'after': true }
+    "eqeqeq": "error",
+    "no-trailing-spaces": "error",
+    "object-curly-spacing": [
+      "error",
+      "always"
     ],
-    'no-console': 0,
-    'react/prop-types': 0,
-    'react/react-in-jsx-scope': 'off'
+    "arrow-spacing": [
+      "error",
+      { "before": true, "after": true }
+    ],
+    "no-console": 0,
+    "react/prop-types": 0,
+    "react/react-in-jsx-scope": "off"
   },
-  'settings': {
-    'react': {
-      'version': 'detect'
+  "settings": {
+    "react": {
+      "version": "detect"
     }
   }
-}
+};

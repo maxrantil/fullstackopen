@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 const getTokenFrom = request => {
   const authorization = request.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer')) {
-    return authorization.replace('bearer', '').trim()
+    return authorization.replace(/bearer\s+/i, '')
   }
   return null
 }
