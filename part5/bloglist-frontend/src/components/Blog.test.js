@@ -4,6 +4,9 @@ import { render, fireEvent } from '@testing-library/react'
 import Blog from '../components/Blog'
 
 describe('<Blog />', () => {
+  let component
+  const likeBlog = jest.fn()  // mock function
+
   const blog = {
     title: 'Test blog',
     author: 'Test author',
@@ -19,11 +22,10 @@ describe('<Blog />', () => {
     username: 'testuser'
   }
 
-  let component
-
   beforeEach(() => {
-    component = render(<Blog blog={blog} user={user} />)
+    component = render(<Blog blog={blog} user={user} likeBlog={likeBlog} />)
   })
+
 
   test('renders title and author, but not url or likes by default', () => {
     expect(component.getByText('Test blog')).toBeDefined()
@@ -48,5 +50,16 @@ describe('<Blog />', () => {
 
     const likesCount = component.getByText('5')
     expect(likesCount).toBeDefined()
+  })
+
+  test('if like button is clicked twice, the event handler is called twice', () => {
+    const viewButton = component.getByText('view')
+    fireEvent.click(viewButton)
+
+    const likeButton = component.getByText('like')
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+
+    expect(likeBlog).toHaveBeenCalledTimes(2)
   })
 })
