@@ -66,9 +66,25 @@ const App = () => {
       })
   }
 
-  const notesToShow = showAll
-    ? notes
-    : notes.filter(note => note.important)
+  // const toggleImportanceOf = id => {
+  //   const note = notes.find(n => n.id === id)
+  //   const changedNote = { ...note, important: !note.important }
+
+  //   noteService
+  //     .update(id, changedNote).then(returnedNote => {
+  //       setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+  //       console.log('notes', notes)
+  //     })
+  //     .catch(() => {
+  //       setErrorMessage(
+  //         `Note '${note.content}' was already removed from server`
+  //       )
+  //       setTimeout(() => {
+  //         setErrorMessage(null)
+  //       }, 5000)
+  //       setNotes(notes.filter(n => n.id !== id))
+  //     })
+  // }
 
   const toggleImportanceOf = id => {
     const note = notes.find(n => n.id === id)
@@ -76,7 +92,8 @@ const App = () => {
 
     noteService
       .update(id, changedNote).then(returnedNote => {
-        setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+        console.log('returnedNote', returnedNote)
+        setNotes(notes.map(note => note.id !== id ? note : { ...returnedNote, id: note.id }))
       })
       .catch(() => {
         setErrorMessage(
@@ -88,6 +105,11 @@ const App = () => {
         setNotes(notes.filter(n => n.id !== id))
       })
   }
+
+  const notesToShow = showAll
+    ? notes
+    : notes.filter(note => note.important)
+
 
   return (
     <div>
@@ -117,7 +139,7 @@ const App = () => {
 
       <div>
         <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all' }
+          show {showAll ? 'important' : 'all'}
         </button>
       </div>
       <ul>
