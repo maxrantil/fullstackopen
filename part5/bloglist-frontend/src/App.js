@@ -17,10 +17,11 @@ const App = () => {
   const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService
-      .getAll().then(initialBlogs =>
-        setBlogs(initialBlogs)
-      )
+    async function fetchData() {
+      const blogs = await blogService.getAll()
+      setBlogs(blogs)
+    }
+    fetchData()
   }, [])
 
   useEffect(() => {

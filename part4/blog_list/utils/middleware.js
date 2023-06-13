@@ -61,8 +61,6 @@ const userExtractor = async (request, response, next) => {
   next()
 }
 
-module.exports = userExtractor
-
 module.exports = {
   requestLogger,
   unknownEndpoint,

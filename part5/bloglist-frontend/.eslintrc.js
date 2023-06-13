@@ -3,7 +3,8 @@ module.exports = {
   'env': {
     'browser': true,
     'es6': true,
-    'jest/globals': true
+    'jest/globals': true,
+    'cypress/globals': true
   },
   'extends': [
     'eslint:recommended',
@@ -17,7 +18,7 @@ module.exports = {
     'sourceType': 'module'
   },
   'plugins': [
-    'react', 'jest'
+    'react', 'jest', 'cypress'
   ],
   'rules': {
     'indent': [
@@ -35,6 +36,10 @@ module.exports = {
     'semi': [
       'error',
       'never'
+    ],
+    'ignorePatterns': [
+      0, // Set severity to 0 (off) for the ignorePatterns rule
+      '**/.eslintrc' // Specify the pattern to ignore
     ],
     'eqeqeq': 'error',
     'no-trailing-spaces': 'error',
