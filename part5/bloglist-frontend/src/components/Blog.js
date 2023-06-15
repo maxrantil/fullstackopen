@@ -28,6 +28,8 @@ const Blog = ({ blog, likeBlog, deleteBlog, user }) => {
             <button onClick={() => likeBlog(blog.id)}>like</button>
           </p>
           <p>{blog.user.name}</p>
+          {console.log('blog.user.username', blog.user.username)}
+          {console.log('user.username', user.username)}
           {blog.user.username === user.username && (
             <button onClick={() => deleteBlog(blog.id)}>remove</button>
           )}

@@ -103,13 +103,15 @@ const App = () => {
     const updatedBlog = {
       ...blog,
       likes: blog.likes + 1,
-      user: blog.user.id,
+      // Keep the user object instead of just the id
+      user: blog.user.id ? blog.user.id : blog.user,
       author: blog.author,
       title: blog.title,
       url: blog.url
     }
     const returnedBlog = await blogService.update(id, updatedBlog)
-    setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
+    // Replace the old blog with the updated one in the state
+    setBlogs(blogs.map(blog => blog.id !== id ? blog : { ...returnedBlog, user: blog.user }))
   }
 
   const deleteBlog = async (id) => {
@@ -119,7 +121,6 @@ const App = () => {
       setBlogs(blogs.filter(blog => blog.id !== id))
     }
   }
-
 
   return (
     <div>
@@ -132,9 +133,10 @@ const App = () => {
         <Togglable buttonLabel='create new blog' ref={blogFormRef}>
           <BlogForm createBlog={createBlog} />
         </Togglable>
-        {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
+        {blogs.filter(blog => blog !== null).sort((a, b) => b.likes - a.likes).map(blog =>
           <Blog key={blog.id} blog={blog} likeBlog={likeBlog} deleteBlog={deleteBlog} user={user} />
         )}
+
       </div>
       }
     </div>
