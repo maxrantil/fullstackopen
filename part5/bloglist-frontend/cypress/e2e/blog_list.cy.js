@@ -64,5 +64,16 @@ describe('Blog app', function () {
       cy.contains('remove').click()
       cy.get('html').should('not.contain', 'a blog created by cypress')
     })
+
+    it('A blog cannot be deleted by another user', function() {
+      cy.createBlog({ title: 'a blog', author: 'created by cypress', url: 'cypress.io' })
+      cy.contains('view').click()
+      cy.get('button:contains("remove")').should('exist')
+      cy.contains('logout').click()
+      cy.request('POST', `${Cypress.env('BACKEND')}/users`, { name: 'another user', username: 'another', password: 'user' })
+      cy.login({ username: 'another', password: 'user' })
+      cy.contains('view').click()
+      cy.get('button:contains("remove")').should('not.exist')
+    })
   })
 })
