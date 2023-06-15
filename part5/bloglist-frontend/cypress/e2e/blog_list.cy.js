@@ -76,4 +76,18 @@ describe('Blog app', function () {
       cy.get('button:contains("remove")').should('not.exist')
     })
   })
+  describe('When several blogs exist', function() {
+    beforeEach(function() {
+      cy.login({ username: 'mluukkai', password: 'salainen' })
+      cy.createBlog({ title: 'First blog', author: 'Author 1', url: 'http://example.com/1', likes: 5 })
+      cy.createBlog({ title: 'Second blog', author: 'Author 2', url: 'http://example.com/2', likes: 10 })
+      cy.createBlog({ title: 'Third blog', author: 'Author 3', url: 'http://example.com/3', likes: 15 })
+    })
+
+    it('Blogs are ordered according to likes', function() {
+      cy.get('.blogComponent').eq(0).should('contain', 'Third blog')
+      cy.get('.blogComponent').eq(1).should('contain', 'Second blog')
+      cy.get('.blogComponent').eq(2).should('contain', 'First blog')
+    })
+  })
 })
