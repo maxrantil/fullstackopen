@@ -1,6 +1,6 @@
 import DeleteButton from './DeleteButton';
 
-const People = ({ peopleToShow, handleDelete }) => {
+const People = ({ peopleToShow = [], handleDelete }) => {
     return (
         <div>
             {peopleToShow.map((person, index) =>
