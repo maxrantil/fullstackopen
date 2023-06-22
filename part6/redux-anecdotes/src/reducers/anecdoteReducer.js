@@ -1,5 +1,3 @@
-// import { createStore } from 'redux'
-
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -55,13 +53,10 @@ export const createAnecdote = (content) => {
 
 export const vote = (id) => {
   console.log('vote', id)
-  // dispatch({ type: 'VOTE', data: { id } })
   return {
     type: 'VOTE',
     data: { id }
   }
 }
-
-// const store = createStore(reducer)
 
 export default reducer
